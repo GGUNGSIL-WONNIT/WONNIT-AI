@@ -1,4 +1,4 @@
-# 🏷️ Scene Classification · 🧭 Space Item Detection · 🔍 Change Detection
+<img width="950" height="247" alt="change5" src="https://github.com/user-attachments/assets/6f6184c6-ebe6-4304-a75e-b3d658d1133d" /># 🏷️ Scene Classification · 🧭 Space Item Detection · 🔍 Change Detection
 MobileNetV2 (torchvision) · YOLOv8n · TinyChangeUNet (MobileNetV3 encoder)
 
 <p align="center">
@@ -186,7 +186,8 @@ model.predict(source="space_data/images/test", imgsz=640, conf=0.25, save=True)
 **생성 데이터 예시**
 <img width="950" height="247" alt="change3" src="https://github.com/user-attachments/assets/fad3c96a-25fa-48f9-b470-d265750a26c5" />
 <img width="950" height="196" alt="change4" src="https://github.com/user-attachments/assets/89c8297f-7ae5-46b0-867f-8c434cff6406" />
-
+<img width="950" height="247" alt="change5" src="https://github.com/user-attachments/assets/cf163ec4-030f-4f0f-84b7-bb3f17741960" />
+<img width="950" height="247" alt="change6" src="https://github.com/user-attachments/assets/5a86a376-045f-4b66-b920-d8ab19ac50c9" />
 
 
 **모델 구조 요약**
