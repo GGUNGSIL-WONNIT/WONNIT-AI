@@ -1,4 +1,4 @@
-<img width="1290" height="998" alt="matrix" src="https://github.com/user-attachments/assets/fe718c2f-bbd5-42a3-a745-562f604df3be" /># 🏷️ Scene Classification · 🧭 Space Item Detection · 🔍 Change Detection
+# 🏷️ Scene Classification · 🧭 Space Item Detection · 🔍 Change Detection
 MobileNetV2 (torchvision) · YOLOv8n · TinyChangeUNet (MobileNetV3 encoder)
 
 <p align="center">
