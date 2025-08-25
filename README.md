@@ -1,4 +1,4 @@
-# 🏷️ Scene Classification · 🧭 Space Item Detection · 🔍 Change Detection
+<img width="1290" height="998" alt="matrix" src="https://github.com/user-attachments/assets/fe718c2f-bbd5-42a3-a745-562f604df3be" /># 🏷️ Scene Classification · 🧭 Space Item Detection · 🔍 Change Detection
 MobileNetV2 (torchvision) · YOLOv8n · TinyChangeUNet (MobileNetV3 encoder)
 
 <p align="center">
@@ -71,12 +71,12 @@ python train_mobilenet.py
 | small_theater_gallery | 8 / 10 | **80.0%** |
 | study_room | 10 / 10 | **100.0%** |
 
+<img width="1290" height="998" alt="matrix" src="https://github.com/user-attachments/assets/31a65d1a-5148-461b-a993-5ef87e921895" />
+
 **Overall Acc**: 43/50 = **86.0%** · **Macro Acc**: **86.0%**  
 > 주요 오분류: `dance_studio → small_theater_gallery` 2건, `music_rehearsal_room → study_room` 2건 등.
 
-<!-- 선택: 혼동행렬 이미지 경로만 맞추면 표시됩니다.
-![Scene Confusion Matrix](assets/scene_confusion_matrix.png)
--->
+
 
 ---
 ## B) Space Item Detection (아이템 탐지)
