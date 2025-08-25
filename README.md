@@ -8,13 +8,6 @@ TinyChangeUNet · YOLOv8 · PyTorch/timm
 평가 루틴: 검증 threshold sweep으로 최적 th 선택 → 테스트 mIoU/F1 & PNG 저장
 YOLOv8 탐지: 공간 내 물품(에어컨/거울/피아노 등) 커스텀 탐지
 분류 스크립트: timm 백본으로 공간/물품 단일 이미지 분류
-✨ 무엇이 들어있나요?
-합성 Change 데이터 구축: 가림/블러/픽셀화/인페인트/이동으로 after + GT(0/255) 자동 생성
-경량 TinyChangeUNet: before(3)+after(3)+diff(1)=7ch → 1×1 conv → MobileNetV3 encoder → 얕은 decoder
-안정 학습 루프: AMP(FP16), Cosine+Warmup, EMA 검증/저장, pos_weight 자동 추정
-평가 루틴: 검증 threshold sweep으로 최적 th 선택 → 테스트 mIoU/F1 & PNG 저장
-YOLOv8 탐지: 공간 내 물품(예: 에어컨/거울/피아노…) 커스텀 탐지
-분류 스크립트: timm 백본으로 공간/물품 단일 이미지 분류
 🚀 10초 퀵스타트
 pip install torch torchvision timm ultralytics opencv-python numpy matplotlib tqdm scikit-learn
 노트북: change_detection.ipynb, space_item_detection.ipynb · 분류 스크립트: space_classification.py
