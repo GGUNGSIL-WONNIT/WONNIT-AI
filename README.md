@@ -1,7 +1,7 @@
 🔍 Change Detection · 🧭 Space Item Detection · 🧪 Space Classification
 TinyChangeUNet · YOLOv8 · PyTorch/timm
 <p align="center"> <img src="https://img.shields.io/badge/python-3.10%2B-1f6feb"> <img src="https://img.shields.io/badge/pytorch-2.x-EE4C2C"> <img src="https://img.shields.io/badge/timm-MobileNetV3-ffc107"> <img src="https://img.shields.io/badge/ultralytics-YOLOv8-00b894"> <img src="https://img.shields.io/badge/repro-seed%3D42-8957e5"> </p> <p align="center"> 실내 공간 데이터를 대상으로 <b>변화 감지</b>, <b>물품 탐지</b>, <b>분류</b>를 아우르는 파이프라인입니다. </p> <p align="center"> <a href="#-10초-퀵스타트">🚀 빠른 시작</a> · <a href="#-폴더-구조">📁 폴더 구조</a> · <a href="#모듈-a--change-detection">A. Change Detection</a> · <a href="#모듈-b--space-item-detection">B. Item Detection</a> · <a href="#모듈-c--space-classification">C. Classification</a> </p>
-##✨ 무엇이 들어있나요?
+## ✨ 무엇이 들어있나요?
 
 - **합성 Change 데이터 구축**: 가림/블러/픽셀화/인페인트/이동으로 after + **GT(0/255)** 자동 생성
 - **경량 TinyChangeUNet**: `before(3)+after(3)+diff(1)=7ch → 1×1 conv → MobileNetV3 encoder → 얕은 decoder`
@@ -10,9 +10,6 @@ TinyChangeUNet · YOLOv8 · PyTorch/timm
 - **YOLOv8 탐지**: 공간 내 물품(에어컨/거울/피아노 등) 커스텀 탐지
 - **분류 스크립트**: `timm` 백본으로 공간/물품 **단일 이미지 분류**
 
-🚀 10초 퀵스타트
-pip install torch torchvision timm ultralytics opencv-python numpy matplotlib tqdm scikit-learn
-노트북: change_detection.ipynb, space_item_detection.ipynb · 분류 스크립트: space_classification.py
 📁 폴더 구조
 # A) Change Detection (합성 데이터)
 pairs_out_cd/
