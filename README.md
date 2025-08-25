@@ -10,28 +10,12 @@ TinyChangeUNet · YOLOv8 · PyTorch/timm
 - **YOLOv8 탐지**: 공간 내 물품(에어컨/거울/피아노 등) 커스텀 탐지
 - **분류 스크립트**: `timm` 백본으로 공간/물품 **단일 이미지 분류**
 
-📁 폴더 구조
-# A) Change Detection (합성 데이터)
-pairs_out_cd/
-  train/{before_images, after_images, labels}
-  val/{before_images, after_images, labels}
-  test/{before_images, after_images, labels}
-meta/pairs_{train,val}.json   # 통계/경로 메타
-
-# B) Space Item Detection (YOLO 형식)
-space_data/
-  images/{train,val,test}/*.jpg|png
-  labels/{train,val,test}/*.txt      # YOLO: cls cx cy w h
-  space.yaml                         # 데이터 설정
-
-# C) Space Classification (폴더-클래스)
-space_cls/
-  train/<class>/*.jpg|png
-  val/<class>/*.jpg|png
-  test/<class>/*.jpg|png
-마스크는 0/255 바이너리 PNG, 리사이즈 시 nearest 권장.
-모듈 A — Change Detection
-노트북: change_detection.ipynb · 모델: TinyChangeUNet(MobileNetV3 Small) · 입력: 7채널(before+after+diff)
+## 📁 폴더 구조
+A) Change Detection (합성 데이터)
+데이터 생성: 가림/블러/픽셀화/인페인트/이동으로 after + GT(0/255) 자동 생성
+모델: before(3)+after(3)+diff(1)=7ch → 1×1 conv → MobileNetV3 encoder → 얕은 decoder
+학습 루프: AMP(FP16), Cosine+Warmup, EMA 검증/저장, pos_weight 자동 추정
+평가: 검증 threshold sweep으로 최적 th 선택 → 테스트 mIoU/F1 & PNG 저장
 flowchart LR
   A[Before (3ch)] ---|concat| R[Reduce 1x1 Conv → 3ch]
   B[After (3ch)]  ---|concat| R
@@ -40,6 +24,47 @@ flowchart LR
   E -->|multi-scale| Dec[Tiny Decoder]
   Dec --> H[Head 1x1 Conv]
   H --> M[Sigmoid → Binary Mask (0/255)]
+<details> <summary>🎨 오버레이(After 위 반투명) 코드</summary>
+def overlay(rgb, mask, color=(0,255,255), alpha=0.35):
+    import numpy as np
+    m = (mask > 127).astype(np.uint8)
+    tint = np.ones_like(rgb, dtype=np.uint8)*np.array(color, dtype=np.uint8)
+    over = (rgb*(1-alpha) + tint*alpha).astype(np.uint8)
+    out = rgb.copy(); out[m>0] = over[m>0]
+    return out
+</details>
+B) Space Item Detection (YOLO 형식)
+모델: YOLOv8(사전학습 → 커스텀 파인튜닝)
+데이터: space_data/(YOLO txt: cls cx cy w h)
+출력: val mAP, test 예측 이미지 저장
+# space.yaml (예시)
+path: ./space_data
+train: images/train
+val: images/val
+test: images/test
+names:
+  0: air_conditioner
+  1: mirror
+  2: piano
+  # ...
+from ultralytics import YOLO
+model = YOLO("yolov8n.pt")
+model.train(data="space_data/space.yaml", imgsz=640, epochs=100, batch=16, seed=42)
+model.val(data="space_data/space.yaml", imgsz=640, split="val")
+model.predict(source="space_data/images/test", imgsz=640, conf=0.25, save=True)
+C) Space Classification (폴더-클래스)
+모델: timm 백본(resnet/efficientnet 등) 전이학습
+데이터: space_cls/{train,val,test}/<class>/*.jpg|png
+지표: Top-1 Acc, macro F1, Confusion Matrix
+# 학습
+python space_classification.py \
+  --data space_cls --img-size 224 --batch-size 32 --epochs 50 \
+  --model resnet18 --lr 3e-4 --seed 42 --save ckpt_space_cls.pt
+
+# 평가
+python space_classification.py \
+  --data space_cls --img-size 224 --batch-size 32 \
+  --weights ckpt_space_cls.pt --eval
 사용 절차
 PairDataset2In 정의 → 2) TinyChangeUNet 정의 → 3) Train/Eval 실행(IMG_SIZE=256, BATCH=8, LR=3e-4, EPOCHS=40)
 Self-contained TEST Eval: 재시작 후 체크포인트 로드 → 검증 sweep → 테스트 mIoU/F1 + ./test_preds/*.png
